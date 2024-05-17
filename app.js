@@ -42,21 +42,22 @@ app.use(express.static(path.join(__dirname, 'public')));//recibe direccion
 
 //app.use(cors());
 
-// Middleware para permitir CORS (si es necesario)
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-XSRF-TOKEN');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', '*');
+    res.header("Access-Control-Allow-Headers", "*");
     next();
 });
+
 
 /*
 // Configuración de CORS
 app.use(cors({
     origin: '*', // Permite solo este origen
-    credentials: true // Permite cookies
+    credentials: true, // Permite cookies
 }));
 */
+
 
 //CSRF
 var csrfProtection = csrf({ cookie: true })
