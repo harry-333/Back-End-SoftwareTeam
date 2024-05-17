@@ -53,7 +53,7 @@ module.exports = {
             documento: req.body.documento,
             tipo_documento: req.body.tipo_documento,
             id_rol: req.body.id_rol,
-            mfa_enabled_: 0
+            mfa_enabled: 0
         };
     
     
