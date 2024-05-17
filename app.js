@@ -42,21 +42,27 @@ app.use(express.static(path.join(__dirname, 'public')));//recibe direccion
 
 //app.use(cors());
 
+/*
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', '*');
     res.header("Access-Control-Allow-Headers", "*");
     next();
 });
+*/
 
 
-/*
+
 // Configuración de CORS
 app.use(cors({
     origin: '*', // Permite solo este origen
     credentials: true, // Permite cookies
+    methods: '*',
+    allowedHeaders: '*',
+    exposedHeaders: '*',
+    preflightContinue: true
 }));
-*/
+
 
 
 //CSRF
