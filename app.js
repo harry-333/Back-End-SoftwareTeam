@@ -63,8 +63,9 @@ app.use(cors({
 */
 
 app.use(cors({
+    origin: '*',
     credentials: true,
-    preflightContinue: true
+    methods: '*'
 }));
 
 //CSRF
