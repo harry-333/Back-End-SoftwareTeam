@@ -53,7 +53,7 @@ app.use((req, res, next) => {
 
 // Configuración de CORS
 app.use(cors({
-    origin: 'http://localhost:4200', // Permite solo este origen
+    origin: 'https://softwareteam2024.netlify.app', // Permite solo este origen
     credentials: true // Permite cookies
 }));
 
