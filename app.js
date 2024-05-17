@@ -52,18 +52,20 @@ app.use(function (req, res, next) {
 */
 
 
-
+/*
 // Configuración de CORS
 app.use(cors({
     origin: '*', // Permite solo este origen
     credentials: true, // Permite cookies
     methods: '*',
-    allowedHeaders: '*',
-    exposedHeaders: '*',
     preflightContinue: true
 }));
+*/
 
-
+app.use(cors({
+    credentials: true,
+    preflightContinue: true
+}));
 
 //CSRF
 var csrfProtection = csrf({ cookie: true })
