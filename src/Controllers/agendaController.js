@@ -1,13 +1,14 @@
 var express = require('express');
 var router = express.Router();
+const moment = require('moment-timezone');
 
 var agendaModel = require('../Models/agendaModel');
 
 module.exports = {
-    
+
     misAgendas: function (req, res) {
         var id = req.params.id;
-        agendaModel.getAgendas(id,function (error, data) {
+        agendaModel.getAgendas(id, function (error, data) {
             res.status(200).json(data);
         });
     },
@@ -52,20 +53,20 @@ module.exports = {
             res.status(500).json({ "msg": "No es un número" });
         }
 
-    
+
     },
 
     //Obtener informe por propiedad y periodo de tiempo
-    informePropiedad: function(req,res){
+    informePropiedad: function (req, res) {
         var tit = req.params.tit;
         var a1 = req.params.a1;
         var a2 = req.params.a2;
 
-        agendaModel.getInformeProp(tit,a1,a2, function(error, data){
+        agendaModel.getInformeProp(tit, a1, a2, function (error, data) {
 
-            if(typeof data !== 'undefined' && data.length > 0){
+            if (typeof data !== 'undefined' && data.length > 0) {
                 res.status(200).json(data);
-            }else{
+            } else {
                 res.json(404,
                     {
                         "msg": "Registro no Existe"
@@ -77,16 +78,16 @@ module.exports = {
     },
 
     //Obtener informe por vendedor y periodo de tiempo
-    informeVendedor: function(req,res){
+    informeVendedor: function (req, res) {
         var vend = req.params.vend;
         var f1 = req.params.f1;
         var f2 = req.params.f2;
 
-        agendaModel.getInformeVend(vend,f1,f2, function(error, data){
+        agendaModel.getInformeVend(vend, f1, f2, function (error, data) {
 
-            if(typeof data !== 'undefined' && data.length > 0){
+            if (typeof data !== 'undefined' && data.length > 0) {
                 res.status(200).json(data);
-            }else{
+            } else {
                 res.json(404,
                     {
                         "msg": "Registro no Existe"
@@ -97,28 +98,27 @@ module.exports = {
 
     },
 
-    //---------------------------------------------------------------
-    //Muestra y captura los datos del método CRUL crear, usando el verbo post
+    // Función para insertar una nueva entrada en la agenda
     insertarAgenda: function (req, res) {
-        //creamos un objeto Json con los datos de la agenda
-        var agendaData =
-        {
+        // Convertimos la fecha y hora a la zona horaria deseada (por ejemplo, 'America/Mexico_City')
+        const fechaHoraConvertida = moment(req.body.fecha_hora).tz('America/Mexico_City').format('YYYY-MM-DD HH:mm:ss');
+
+        // Creamos un objeto JSON con los datos de la agenda, utilizando la fecha y hora convertida
+        var agendaData = {
             id_agenda: null,
             id_usuario: req.body.id_usuario,
             comentarios: req.body.comentarios,
-            fecha_hora: req.body.fecha_hora,
+            fecha_hora: fechaHoraConvertida,
             id_propiedad: req.body.id_propiedad,
             id_vendedor: req.body.id_vendedor
         };
 
-
-        //usamos la funcion para insertar
+        // Usamos la función para insertar
         agendaModel.insertAgenda(agendaData, function (error, data) {
-            //se muestra el mensaje correspondiente
+            // Se muestra el mensaje correspondiente
             if (data) {
                 res.status(200).json(data);
-            }
-            else {
+            } else {
                 res.status(500).send({ error: "boo:(" });
             }
         });
