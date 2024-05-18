@@ -44,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));//recibe direccion
 app.use(cors({
     origin: 'https://main--softwareteam2024.netlify.app',
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] // Asegúrate de incluir todos los métodos necesarios
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 
 //CSRF
