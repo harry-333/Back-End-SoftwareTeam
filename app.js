@@ -51,8 +51,11 @@ var csrfProtection = csrf({ cookie: true })
 // We need cookie-parser to be initialized as well.
 app.use(cookieParser())
 app.get('/csrfEndpoint', csrfProtection, (req, res, next) => {
-    res.cookie('XSRF-TOKEN', req.csrfToken());
-    res.status(200).send('CSRF token set');
+    res.cookie('XSRF-TOKEN', req.csrfToken(), { 
+        sameSite: 'none', 
+        secure: true 
+    });
+    res.status(200).json({ message: 'CSRF token set' });
 });
 
 //XSS Protection
