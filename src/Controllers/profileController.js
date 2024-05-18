@@ -2,6 +2,10 @@ var conexion = require('../Connection/index');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const CryptoJS = require('crypto-js');
+
+
+const secretKey = 'udec';
 
 //Ruta para actualizar informacion basica del usuario
 router.post('/:id', async (req, res) => {
@@ -43,11 +47,12 @@ router.post('/:id', async (req, res) => {
 
 //Ruta para actualizar contraseña del usuario
 router.post('/password/:id', async (req, res) => {
-    try{
-
+    try {
         const userId = req.params.id;
-        const nuevaContrasena = req.body.contrasena;
+        const nuevaContrasenaEncriptada = req.body.contrasena; // Contraseña encriptada
 
+        // Desencriptar la nueva contraseña
+        const nuevaContrasena = decryptPassword(nuevaContrasenaEncriptada);
 
         // Encriptar la nueva contraseña con Bcrypt
         const hashedPassword = await bcrypt.hash(nuevaContrasena, 10);
@@ -66,10 +71,16 @@ router.post('/password/:id', async (req, res) => {
             }
         );
 
-    }catch(error){
+    } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Error interno del servidor' });
     }
-})
+});
+
+// Función para desencriptar la contraseña
+function decryptPassword(encryptedPassword) {
+    const bytes = CryptoJS.AES.decrypt(encryptedPassword, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+}
 
 module.exports = router;

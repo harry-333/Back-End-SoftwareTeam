@@ -2,8 +2,10 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const usuarioModel = require('../Models/usuarioModel');
 const speakeasy = require('speakeasy'); 
+const CryptoJS = require('crypto-js');
 
 const loginController = {};
+const secretKey = 'udec';
 
 loginController.login = async function (req, res) {
     try {
@@ -13,6 +15,9 @@ loginController.login = async function (req, res) {
             return;
         }
 
+        const decryptedPassword = decryptPassword(contrasena);
+        console.log(decryptedPassword);
+        
         usuarioModel.buscarUsuarioPorCorreo(correo, async function (error, results) {
             if (error) {
                 console.log(error);
@@ -25,7 +30,7 @@ loginController.login = async function (req, res) {
                 return;
             }
 
-            const hashComparacion = await bcrypt.compare(contrasena, results[0].contrasena);
+            const hashComparacion = await bcrypt.compare(decryptedPassword, results[0].contrasena);
             if (!hashComparacion) {
                 res.status(400).send("Credenciales Incorrectas");
                 return;
@@ -42,6 +47,11 @@ loginController.login = async function (req, res) {
         res.status(500).send("Error del servidor");
     }
 };
+
+function decryptPassword(encryptedPassword) {
+    const bytes = CryptoJS.AES.decrypt(encryptedPassword, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+}
 
 loginController.validateOTP = async function (req, res) {
     try {

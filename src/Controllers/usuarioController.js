@@ -1,7 +1,15 @@
 
 const bcrypt = require('bcrypt');
+const CryptoJS = require('crypto-js');
 
 var usuarioModel = require('../Models/usuarioModel');
+
+const secretKey = 'udec';
+
+function decryptPassword(encryptedPassword) {
+    const bytes = CryptoJS.AES.decrypt(encryptedPassword, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+}
 
 module.exports = {
     listarUsuarios : (req, res) => {
@@ -55,13 +63,15 @@ module.exports = {
             id_rol: req.body.id_rol,
             mfa_enabled: 0
         };
-    
+
+        const decryptedPassword = decryptPassword(usuarioData.contrasena);    
     
         // Encriptamos la contraseña antes de almacenarla en la base de datos
-        bcrypt.hash(req.body.contrasena, 10, function (err, hash) {
+        bcrypt.hash(decryptedPassword, 10, function (err, hash) {
             if (err) {
                 res.status(500).send({ error: "Error al encriptar la contraseña" });
             } else {
+
                 usuarioData.contrasena = hash; // Almacenamos la contraseña encriptada
                 // Usamos la función para insertar
                 usuarioModel.insertUsuario(usuarioData, function (error, data) {

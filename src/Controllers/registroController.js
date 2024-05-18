@@ -1,11 +1,15 @@
-// registroController.js
-
+const CryptoJS = require('crypto-js');
+const bcrypt = require('bcrypt');
 const usuarioModel = require('../Models/usuarioModel');
 
 const registroController = {};
 
+const secretKey = 'udec';
+
 registroController.registrarUsuario = function (req, res) {
     const userData = req.body;
+    userData.contrasena = decryptPassword(userData.contrasena);
+    
     usuarioModel.registrarUsuario(userData, (error, result) => {
         if (error) {
             console.log(error);
@@ -19,5 +23,10 @@ registroController.registrarUsuario = function (req, res) {
         }
     });
 };
+
+function decryptPassword(encryptedPassword) {
+    const bytes = CryptoJS.AES.decrypt(encryptedPassword, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+}
 
 module.exports = registroController;
