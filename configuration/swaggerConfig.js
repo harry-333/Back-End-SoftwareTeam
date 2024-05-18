@@ -7,13 +7,13 @@ const swaggerSpec = {
     info: {
       title: 'API Software Team',
       version: '1.0.0',
-      description: 'Documentación de la API de los módulos del software',
+      description: 'Control de Inmobiliarias de Citas',
     },
 
     servers: [
       {
-        url: "http://localhost:3000/",
-        description: "Local server"
+        url: "https://back-end-softwareteam.onrender.com",
+        description: "Server deploy in Render"
       },
     ],
 

@@ -40,30 +40,8 @@ app.use(express.static(path.join(__dirname, 'public')));//recibe direccion
 
 //CORS
 
-//app.use(cors());
-
-/*
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header('Access-Control-Allow-Methods', '*');
-    res.header("Access-Control-Allow-Headers", "*");
-    next();
-});
-*/
-
-
-/*
-// Configuración de CORS
 app.use(cors({
-    origin: '*', // Permite solo este origen
-    credentials: true, // Permite cookies
-    methods: '*',
-    preflightContinue: true
-}));
-*/
-
-app.use(cors({
-    origin: '*',
+    origin: 'http://localhost:4200',
     credentials: true,
     methods: '*'
 }));
@@ -73,7 +51,7 @@ var csrfProtection = csrf({ cookie: true })
 // We need cookie-parser to be initialized as well.
 app.use(cookieParser())
 app.get('/csrfEndpoint', csrfProtection, (req, res, next) => {
-    res.cookie('XSRF-TOKEN', req.csrfToken(), { httpOnly: false });
+    res.cookie('XSRF-TOKEN', req.csrfToken());
     res.status(200).send('CSRF token set');
 });
 
