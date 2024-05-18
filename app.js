@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));//recibe direccion
 //CORS
 
 app.use(cors({
-    origin: 'http://localhost:4200',
+    origin: 'https://softwareteam2024.netlify.app',
     credentials: true,
     methods: '*'
 }));
