@@ -53,7 +53,8 @@ app.use(cookieParser())
 app.get('/csrfEndpoint', csrfProtection, (req, res, next) => {
     res.cookie('XSRF-TOKEN', req.csrfToken(), { 
         sameSite: 'none', 
-        secure: true 
+        secure: true,
+        httpOnly: false
     });
     res.status(200).json({ message: 'CSRF token set' });
 });
